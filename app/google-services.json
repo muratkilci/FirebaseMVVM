@@ -1,0 +1,47 @@
+{
+  "project_info": {
+    "project_number": "202704621290",
+    "project_id": "fir-mvvm-de21f",
+    "storage_bucket": "fir-mvvm-de21f.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:202704621290:android:01998efb01d58874289193",
+        "android_client_info": {
+          "package_name": "com.example.firebasemvvm"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "202704621290-qe7ki68hu2i1lgqvr58mc3vl2lkt5clv.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.example.firebasemvvm",
+            "certificate_hash": "b94f1e2d7846a968a4e9cb395e67c2c65592fc1c"
+          }
+        },
+        {
+          "client_id": "202704621290-j76430d43pff4cbubnjourvbq8csbglp.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyB0HxC90uIXb6HOAJGnUswPibWBW3zgLx4"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "202704621290-j76430d43pff4cbubnjourvbq8csbglp.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
