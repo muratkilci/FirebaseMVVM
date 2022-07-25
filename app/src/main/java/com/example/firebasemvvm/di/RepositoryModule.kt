@@ -9,7 +9,6 @@ import dagger.hilt.InstallIn
 import dagger.hilt.components.SingletonComponent
 import javax.inject.Singleton
 
-
 @InstallIn(SingletonComponent::class)
 @Module
 object RepositoryModule {
@@ -18,7 +17,7 @@ object RepositoryModule {
     @Singleton
     fun provideNoteRepository(
         database: FirebaseFirestore
-    ): NoteRepository{
+    ): NoteRepository {
         return NoteRepositoryImp(database)
     }
 }
