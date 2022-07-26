@@ -1,9 +1,8 @@
-package com.example.firebasemvvm.utiil
+package com.example.firebasemvvm.util
 
-sealed class UiState<out  T> {
-    //Loading, Success, Failure
-    object Loading : UiState<Nothing>()
-    data class Success<T>(val data: T) : UiState<T>()
+sealed class UiState<out T> {
+    object Loading: UiState<Nothing>()
+    data class Success<out T>(val data: T): UiState<T>()
     data class Failure(val error: String?): UiState<Nothing>()
 }
 

@@ -7,12 +7,14 @@ import android.view.View
 import android.view.ViewGroup
 import androidx.fragment.app.viewModels
 import androidx.navigation.fragment.findNavController
+import androidx.recyclerview.widget.LinearLayoutManager
+import androidx.recyclerview.widget.StaggeredGridLayoutManager
 import com.example.firebasemvvm.R
 import com.example.firebasemvvm.databinding.FragmentNoteListingBinding
-import com.example.firebasemvvm.utiil.UiState
-import com.example.firebasemvvm.utiil.hide
-import com.example.firebasemvvm.utiil.show
-import com.example.firebasemvvm.utiil.toast
+import com.example.firebasemvvm.util.UiState
+import com.example.firebasemvvm.util.hide
+import com.example.firebasemvvm.util.show
+import com.example.firebasemvvm.util.toast
 import dagger.hilt.android.AndroidEntryPoint
 
 @AndroidEntryPoint
@@ -21,24 +23,12 @@ class NoteListingFragment : Fragment() {
     val TAG: String = "NoteListingFragment"
     lateinit var binding: FragmentNoteListingBinding
     val viewModel: NoteViewModel by viewModels()
-    var deletePosition: Int = -1
     val adapter by lazy {
         NoteListingAdapter(
             onItemClicked = { pos, item ->
                 findNavController().navigate(R.id.action_noteListingFragment_to_noteDetailFragment,Bundle().apply {
-                    putString("type","view")
                     putParcelable("note",item)
                 })
-            },
-            onEditClicked = { pos, item ->
-                findNavController().navigate(R.id.action_noteListingFragment_to_noteDetailFragment,Bundle().apply {
-                    putString("type","edit")
-                    putParcelable("note",item)
-                })
-            },
-            onDeleteClicked = { pos, item ->
-                deletePosition = pos
-                viewModel.deleteNote(item)
             }
         )
     }
@@ -47,18 +37,21 @@ class NoteListingFragment : Fragment() {
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View {
-        binding = FragmentNoteListingBinding.inflate(layoutInflater)
-        return binding.root
+        if (this::binding.isInitialized){
+            return binding.root
+        }else {
+            binding = FragmentNoteListingBinding.inflate(layoutInflater)
+            return binding.root
+        }
     }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
+        val staggeredGridLayoutManager = StaggeredGridLayoutManager(2, LinearLayoutManager.VERTICAL)
+        binding.recyclerView.layoutManager = staggeredGridLayoutManager
         binding.recyclerView.adapter = adapter
-        binding.recyclerView.itemAnimator = null
         binding.button.setOnClickListener {
-            findNavController().navigate(R.id.action_noteListingFragment_to_noteDetailFragment,Bundle().apply {
-                putString("type","create")
-            })
+            findNavController().navigate(R.id.action_noteListingFragment_to_noteDetailFragment)
         }
         viewModel.getNotes()
         viewModel.note.observe(viewLifecycleOwner) { state ->
@@ -68,27 +61,11 @@ class NoteListingFragment : Fragment() {
                 }
                 is UiState.Failure -> {
                     binding.progressBar.hide()
-                    state.error?.let { toast(it) }
+                    toast(state.error)
                 }
                 is UiState.Success -> {
                     binding.progressBar.hide()
                     adapter.updateList(state.data.toMutableList())
-                }
-            }
-        }
-        viewModel.deleteNote.observe(viewLifecycleOwner) { state ->
-            when(state){
-                is UiState.Loading -> {
-                    binding.progressBar.show()
-                }
-                is UiState.Failure -> {
-                    binding.progressBar.hide()
-                    state.error?.let { toast(it) }
-                }
-                is UiState.Success -> {
-                    binding.progressBar.hide()
-                    toast(state.data)
-                    adapter.removeItem(deletePosition)
                 }
             }
         }

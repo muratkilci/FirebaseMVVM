@@ -1,7 +1,7 @@
 package com.example.firebasemvvm.data.repository
 
 import com.example.firebasemvvm.data.model.Note
-import com.example.firebasemvvm.utiil.UiState
+import com.example.firebasemvvm.util.UiState
 
 interface NoteRepository {
     fun getNotes(result: (UiState<List<Note>>) -> Unit)

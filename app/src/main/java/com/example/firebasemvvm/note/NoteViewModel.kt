@@ -5,7 +5,7 @@ import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import com.example.firebasemvvm.data.model.Note
 import com.example.firebasemvvm.data.repository.NoteRepository
-import com.example.firebasemvvm.utiil.UiState
+import com.example.firebasemvvm.util.UiState
 import dagger.hilt.android.lifecycle.HiltViewModel
 import javax.inject.Inject
 
