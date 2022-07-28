@@ -1,4 +1,4 @@
-package com.example.firebasemvvm.note
+package com.example.firebasemvvm.ui.note
 
 import android.os.Bundle
 import androidx.fragment.app.Fragment
@@ -57,7 +57,8 @@ class NoteDetailFragment : Fragment() {
                 }
                 is UiState.Success -> {
                     binding.progressBar.hide()
-                    toast(state.data)
+                    toast(state.data.second)
+                    objNote = state.data.first
                     isMakeEnableUI(false)
                     binding.done.hide()
                     binding.delete.show()

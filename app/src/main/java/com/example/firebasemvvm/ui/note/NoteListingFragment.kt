@@ -1,4 +1,4 @@
-package com.example.firebasemvvm.note
+package com.example.firebasemvvm.ui.note
 
 import android.os.Bundle
 import androidx.fragment.app.Fragment

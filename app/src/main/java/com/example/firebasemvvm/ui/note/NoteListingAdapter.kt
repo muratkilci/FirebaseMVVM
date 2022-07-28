@@ -1,4 +1,4 @@
-package com.example.firebasemvvm.note
+package com.example.firebasemvvm.ui.note
 
 import android.view.LayoutInflater
 import android.view.ViewGroup

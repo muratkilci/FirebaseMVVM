@@ -1,7 +1,10 @@
 package com.example.firebasemvvm.di
 
+import com.example.firebasemvvm.data.repository.AuthRepository
+import com.example.firebasemvvm.data.repository.AuthRepositoryImp
 import com.example.firebasemvvm.data.repository.NoteRepository
 import com.example.firebasemvvm.data.repository.NoteRepositoryImp
+import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.firestore.FirebaseFirestore
 import dagger.Module
 import dagger.Provides
@@ -17,7 +20,16 @@ object RepositoryModule {
     @Singleton
     fun provideNoteRepository(
         database: FirebaseFirestore
-    ): NoteRepository {
+    ): NoteRepository{
         return NoteRepositoryImp(database)
+    }
+
+    @Provides
+    @Singleton
+    fun provideAutghRepository(
+        database: FirebaseFirestore,
+        auth: FirebaseAuth
+    ): AuthRepository {
+        return AuthRepositoryImp(auth,database)
     }
 }
