@@ -3,9 +3,9 @@ package com.example.firebasemvvm.ui.auth
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
+import com.example.firebasemvvm.data.model.User
 import com.example.firebasemvvm.data.repository.AuthRepository
 import com.example.firebasemvvm.util.UiState
-import com.google.firebase.firestore.auth.User
 import dagger.hilt.android.lifecycle.HiltViewModel
 import javax.inject.Inject
 
@@ -18,10 +18,18 @@ class AuthViewModel @Inject constructor(
     val register: LiveData<UiState<String>>
         get() = _register
 
+    private val _login = MutableLiveData<UiState<String>>()
+    val login: LiveData<UiState<String>>
+        get() = _login
+
+    private val _forgotPassword = MutableLiveData<UiState<String>>()
+    val forgotPassword: LiveData<UiState<String>>
+        get() = _forgotPassword
+
     fun register(
         email: String,
         password: String,
-        user: com.example.firebasemvvm.data.model.User
+        user: User
     ) {
         _register.value = UiState.Loading
         repository.registerUser(
@@ -29,5 +37,25 @@ class AuthViewModel @Inject constructor(
             password = password,
             user = user
         ) { _register.value = it }
+    }
+
+    fun login(
+        email: String,
+        password: String
+    ) {
+        _login.value = UiState.Loading
+        repository.loginUser(
+            email,
+            password
+        ){
+            _login.value = it
+        }
+    }
+
+    fun forgotPassword(email: String) {
+        _forgotPassword.value = UiState.Loading
+        repository.forgotPassword(email){
+            _forgotPassword.value = it
+        }
     }
 }

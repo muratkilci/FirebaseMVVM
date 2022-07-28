@@ -17,8 +17,7 @@ class AuthRepositoryImp(
     override fun registerUser(
         email: String,
         password: String,
-        user: User,
-        result: (UiState<String>) -> Unit
+        user: User, result: (UiState<String>) -> Unit
     ) {
         auth.createUserWithEmailAndPassword(email,password)
             .addOnCompleteListener {
@@ -58,10 +57,7 @@ class AuthRepositoryImp(
             }
     }
 
-    override fun updateUserInfo(
-        user: User,
-        result: (UiState<String>) -> Unit
-    ) {
+    override fun updateUserInfo(user: User, result: (UiState<String>) -> Unit) {
         val document = database.collection(FireStoreCollection.USER).document()
         user.id = document.id
         document
@@ -81,16 +77,30 @@ class AuthRepositoryImp(
     }
 
     override fun loginUser(
-        user:User,
-        result: (UiState<String>) -> Unit
-    ) {
-        TODO("Not yet implemented")
+        email: String,
+        password: String,
+        result: (UiState<String>) -> Unit) {
+        auth.signInWithEmailAndPassword(email,password)
+            .addOnCompleteListener { task ->
+                if (task.isSuccessful) {
+                    result.invoke(UiState.Success("Login successfully!"))
+                }
+            }.addOnFailureListener {
+                result.invoke(UiState.Failure("Authentication failed, Check email and password"))
+            }
     }
 
-    override fun forgotPassword(
-        user:User,
-        result: (UiState<String>) -> Unit
-    ) {
-        TODO("Not yet implemented")
+    override fun forgotPassword(email: String, result: (UiState<String>) -> Unit) {
+        auth.sendPasswordResetEmail(email)
+            .addOnCompleteListener { task ->
+                if (task.isSuccessful) {
+                    result.invoke(UiState.Success("Email has been sent"))
+
+                } else {
+                    result.invoke(UiState.Failure(task.exception?.message))
+                }
+            }.addOnFailureListener {
+                result.invoke(UiState.Failure("Authentication failed, Check email"))
+            }
     }
 }
