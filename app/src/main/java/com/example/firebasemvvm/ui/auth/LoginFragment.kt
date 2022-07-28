@@ -11,7 +11,6 @@ import com.example.firebasemvvm.R
 import com.example.firebasemvvm.databinding.FragmentLoginBinding
 import com.example.firebasemvvm.util.*
 import dagger.hilt.android.AndroidEntryPoint
-
 @AndroidEntryPoint
 class LoginFragment : Fragment() {
 
@@ -41,7 +40,6 @@ class LoginFragment : Fragment() {
 
         binding.forgotPassLabel.setOnClickListener {
             findNavController().navigate(R.id.action_loginFragment_to_forgotPasswordFragment)
-
         }
 
         binding.registerLabel.setOnClickListener {
