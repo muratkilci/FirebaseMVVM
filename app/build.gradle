@@ -75,6 +75,9 @@ dependencies {
     implementation 'com.google.firebase:firebase-firestore:24.2.1'
     implementation 'com.google.firebase:firebase-auth:21.0.6'
 
+    //Gson
+    implementation 'com.google.code.gson:gson:2.8.9'
+
 
 
 }
