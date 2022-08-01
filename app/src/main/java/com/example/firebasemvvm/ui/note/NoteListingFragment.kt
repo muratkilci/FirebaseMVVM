@@ -31,24 +31,11 @@ class NoteListingFragment : Fragment() {
     val adapter by lazy {
         NoteListingAdapter(
             onItemClicked = { pos, item ->
-                findNavController().navigate(
-                    R.id.action_noteListingFragment_to_noteDetailFragment,
-                    Bundle().apply {
-                        putParcelable("note", item)
-                    })
+                findNavController().navigate(R.id.action_noteListingFragment_to_noteDetailFragment,Bundle().apply {
+                    putParcelable("note",item)
+                })
             }
         )
-    }
-
-    override fun onAttach(context: Context) {
-        super.onAttach(context)
-        Log.e(TAG, "onAttach: ")
-    }
-
-    override fun onCreate(savedInstanceState: Bundle?) {
-        super.onCreate(savedInstanceState)
-        Log.e(TAG, "******************************************************")
-        Log.e(TAG, "onCreate: ")
     }
 
     override fun onCreateView(
@@ -56,9 +43,9 @@ class NoteListingFragment : Fragment() {
         savedInstanceState: Bundle?
     ): View {
         Log.e(TAG, "onCreateView: ")
-        if (this::binding.isInitialized) {
+        if (this::binding.isInitialized){
             return binding.root
-        } else {
+        }else {
             binding = FragmentNoteListingBinding.inflate(layoutInflater)
             return binding.root
         }
@@ -79,12 +66,14 @@ class NoteListingFragment : Fragment() {
                 findNavController().navigate(R.id.action_noteListingFragment_to_loginFragment)
             }
         }
-        viewModel.getNotes()
+        authViewModel.getSession {
+            viewModel.getNotes(it)
+        }
     }
 
-    private fun oberver() {
+    private fun oberver(){
         viewModel.note.observe(viewLifecycleOwner) { state ->
-            when (state) {
+            when(state){
                 is UiState.Loading -> {
                     binding.progressBar.show()
                 }
@@ -98,40 +87,5 @@ class NoteListingFragment : Fragment() {
                 }
             }
         }
-    }
-
-    override fun onStart() {
-        super.onStart()
-        Log.e(TAG, "onStart: ")
-    }
-
-    override fun onResume() {
-        super.onResume()
-        Log.e(TAG, "onResume: ")
-    }
-
-    override fun onPause() {
-        super.onPause()
-        Log.e(TAG, "onPause: ")
-    }
-
-    override fun onStop() {
-        super.onStop()
-        Log.e(TAG, "onStop: ")
-    }
-
-    override fun onDestroyView() {
-        super.onDestroyView()
-        Log.e(TAG, "onDestroyView: ")
-    }
-
-    override fun onDestroy() {
-        super.onDestroy()
-        Log.e(TAG, "onDestroy: ")
-    }
-
-    override fun onDetach() {
-        super.onDetach()
-        Log.e(TAG, "onDetach: ")
     }
 }

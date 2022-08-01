@@ -1,6 +1,7 @@
 package com.example.firebasemvvm.data.repository
 
 import com.example.firebasemvvm.data.model.Note
+import com.example.firebasemvvm.data.model.User
 import com.example.firebasemvvm.util.FireStoreCollection
 import com.example.firebasemvvm.util.FireStoreDocumentField
 import com.example.firebasemvvm.util.UiState
@@ -11,8 +12,9 @@ class NoteRepositoryImp(
     val database: FirebaseFirestore
 ) : NoteRepository {
 
-    override fun getNotes(result: (UiState<List<Note>>) -> Unit) {
+    override fun getNotes(user: User?, result: (UiState<List<Note>>) -> Unit) {
         database.collection(FireStoreCollection.NOTE)
+            .whereEqualTo(FireStoreDocumentField.USER_ID, user?.id)
             .orderBy(FireStoreDocumentField.DATE, Query.Direction.DESCENDING)
             .get()
             .addOnSuccessListener {
@@ -34,14 +36,14 @@ class NoteRepositoryImp(
             }
     }
 
-    override fun addNote(note: Note, result: (UiState<Pair<Note,String>>) -> Unit) {
+    override fun addNote(note: Note, result: (UiState<Pair<Note, String>>) -> Unit) {
         val document = database.collection(FireStoreCollection.NOTE).document()
         note.id = document.id
         document
             .set(note)
             .addOnSuccessListener {
                 result.invoke(
-                    UiState.Success(Pair(note,"Note has been created successfully"))
+                    UiState.Success(Pair(note, "Note has been created successfully"))
                 )
             }
             .addOnFailureListener {
